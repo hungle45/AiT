@@ -101,17 +101,17 @@ class nyudepthv2(BaseDataset):
         self.scale_size = scale_size
 
         self.is_train = is_train
-        self.data_path = os.path.join(data_path, 'nyu_depth_v2')
+        self.data_path = data_path
 
         self.image_path_list = []
         self.depth_path_list = []
 
-        txt_path = os.path.join(filenames_path, 'nyudepthv2')
+        txt_path = filenames_path
         if is_train:
             txt_path += train_file
         else:
             txt_path += '/test_list.txt'
-            self.data_path = self.data_path + '/official_splits/test/'
+            self.data_path = self.data_path
 
         self.filenames_list = self.readTXT(txt_path)
         phase = 'train' if is_train else 'test'
@@ -132,8 +132,7 @@ class nyudepthv2(BaseDataset):
 
         if self.scale_size:
             image = cv2.resize(image, (self.scale_size[0], self.scale_size[1]))
-            depth = cv2.resize(image, (self.scale_size[0], self.scale_size[1]))
-
+            depth = cv2.resize(depth, (self.scale_size[0], self.scale_size[1]))
         if self.is_train:
             image, depth = self.augment_training_data(image, depth)
         else:
